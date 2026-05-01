@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COVA - محل ملابس راقية</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%);
+            color: #f0f0f0;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: rgba(0,0,0,0.9);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            padding: 1rem 0;
+            box-shadow: 0 5px 20px rgba(255,215,0,0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .admin-btn {
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            color: #000;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .admin-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255,215,0,0.4);
+        }
+
+        /* Main Content */
+        main {
+            margin-top: 100px;
+            padding: 50px 0;
+        }
+
+        .hero {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            color: #ccc;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Products Grid */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .product-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            border: 1px solid rgba(255,215,0,0.2);
+            backdrop-filter: blur(10px);
+            position: relative;
+        }
+
+        .product-card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 30px 60px rgba(255,215,0,0.2);
+            border-color: #FFD700;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .product-card:hover .product-image {
+            transform: scale(1.1);
+        }
+
+        .product-info {
+            padding: 25px;
+        }
+
+        .product-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 15px;
+        }
+
+        .product-price {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .old-price {
+            text-decoration: line-through;
+            color: #888;
+            font-size: 1.2rem;
+            margin-left: 10px;
+        }
+
+        .sizes {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .size-btn {
+            background: rgba(255,255,255,0.1);
+            border: 2px solid rgba(255,215,0,0.3);
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .size-btn:hover, .size-btn.active {
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            color: #000;
+            border-color: #FFD700;
+        }
+
+        .whatsapp-btn {
+            width: 100%;
+            background: linear-gradient(45deg, #25D366, #128C7E);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 15px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 15px;
+        }
+
+        .whatsapp-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 35px rgba(37,211,102,0.4);
+        }
+
+        /* Admin Panel */
+        .admin-panel {
+            display: none;
+            background: rgba(0,0,0,0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 50px 0;
+            border: 2px solid rgba(255,215,0,0.3);
+        }
+
+        .admin-panel.active {
+            display: block;
+            animation: slideDown 0.5s ease;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .admin-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            color: #FFD700;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .form-group input, .form-group textarea, .form-group select {
+            background: rgba(255,255,255,0.1);
+            border: 2px solid rgba(255,215,0,0.3);
+            border-radius: 12px;
+            padding: 15px;
+            color: #fff;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+            outline: none;
+            border-color: #FFD700;
+            box-shadow: 0 0 20px rgba(255,215,0,0.2);
+        }
+
+        .form-group input::placeholder, .form-group textarea::placeholder {
+            color: #888;
+        }
+
+        .add-product-btn {
+            grid-column: span 2;
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            color: #000;
+            border: none;
+            padding: 20px;
+            border-radius: 15px;
+            font-size: 1.3rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .add-product-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 40px rgba(255,215,0,0.4);
+        }
+
+        /* Product Detail Page */
+        .product-detail {
+            display: none;
+            max-width: 800px;
+            margin: 50px auto;
+            background: rgba(255,255,255,0.05);
+            border-radius: 25px;
+            padding: 50px;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,215,0,0.2);
+        }
+
+        .product-detail.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .detail-image {
+            width: 100%;
+            max-width: 500px;
+            height: 500px;
+            object-fit: cover;
+            border-radius: 20px;
+            margin-bottom: 30px;
+        }
+
+        .detail-title {
+            font-size: 2.5rem;
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+        }
+
+        .detail-price {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #FFD700;
+            margin-bottom: 30px;
+        }
+
+        .detail-sizes {
+            margin: 30px 0;
+        }
+
+        .detail-order-btn {
+            width: 100%;
+            background: linear-gradient(45deg, #25D366, #128C7E);
+            color: white;
+            border: none;
+            padding: 25px;
+            border-radius: 20px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            margin-top: 30px;
+        }
+
+        .detail-order-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 50px rgba(37,211,102,0.4);
+        }
+
+        .close-detail {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(255,255,255,0.2);
+            color: #fff;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .close-detail:hover {
+            background: #FF4444;
+            transform: rotate(90deg);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .admin-form {
+                grid-template-columns: 1fr;
+            }
+            
+            .add-product-btn {
+                grid-column: span 1;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .product-card:nth-child(1) { animation: float 6s ease-in-out infinite; }
+        .product-card:nth-child(2) { animation: float 6s ease-in-out infinite 1s; }
+        .product-card:nth-child(3) { animation: float 6s ease-in-out infinite 2s; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">COVA</div>
+                <button class="admin-btn" onclick="toggleAdmin()">
+                    <i class="fas fa-cog"></i> لوحة التحكم
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="hero">
+                <h1>COVA</h1>
+                <p>أفخم الموضة بأناقة لا تُضاهى - جودة عالمية بأسعار تنافسية</p>
+            </div>
+
+            <div class="admin-panel" id="adminPanel">
+                <h2 style="color: #FFD700; margin-bottom: 30px; font-size: 2rem; text-align: center;">
+                    إضافة منتج جديد
+                </h2>
+                <form class="admin-form" id="productForm">
+                    <div class="form-group">
+                        <label>اسم المنتج</label>
+                        <input type="text" id="productName" placeholder="اكتب اسم المنتج" required>
+                    </div>
+                    <div class="form-group">
+                        <label>السعر الحالي</label>
+                        <input type="number" id="productPrice" placeholder="مثال: 250" required>
+                    </div>
+                    <div class="form-group">
+                        <label>السعر قبل الخصم (اختياري)</label>
+                        <input type="number" id="oldPrice" placeholder="مثال: 350">
+                    </div>
+                    <div class="form-group">
+                        <label>المقاسات (مفصولة بفاصلة)</label>
+                        <input type="text" id="sizes" placeholder="S,M,L,XL,XXL" required>
+                    </div>
+                    <div class="form-group">
+                        <label>رابط الصورة</label>
+                        <input type="url" id="productImage" placeholder="https://example.com/image.jpg" required>
+                    </div>
+                    <button type="submit" class="add-product-btn">
+                        <i class="fas fa-plus"></i> إضافة المنتج
+                    </button>
+                </form>
+            </div>
+
+            <div class="products-grid" id="productsGrid">
+                <!-- المنتجات هتظهر هنا -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Product Detail Modal -->
+    <div class="product-detail" id="productDetail">
+        <button class="close-detail" onclick="closeDetail()">&times;</button>
+        <img class="detail-image" id="detailImage" src="" alt="">
+        <h2 class="detail-title" id="detailTitle"></h2>
+        <div class="detail-price" id="detailPrice"></div>
+        <div class="detail-sizes">
+            <label style="color: #FFD700; font-size: 1.2rem; margin-bottom: 15px; display: block;">اختر المقاس:</label>
+            <div id="detailSizes"></div>
+        </div>
+        <button class="detail-order-btn" id="orderBtn">
+            <i class="fab fa-whatsapp"></i> اطلب عبر واتساب
+        </button>
+    </div>
+
+    <script>
+        let products = JSON.parse(localStorage.getItem('covaProducts')) || [];
+        let selectedSize = '';
+
+        // تحديث عرض المنتجات
+        function renderProducts() {
+            const grid = document.getElementById('productsGrid');
+            grid.innerHTML = '';
+
+            products.forEach((product, index) => {
+                const productCard = document.createElement('div');
+                productCard.className = 'product-card';
+                productCard.innerHTML = `
+                    <img src="${product.image}" alt="${product.name}" class="product-image" onclick="openDetail(${index})">
+                    <div class="product-info">
+                        <h3 class="product-title">${product.name}</h3>
+                        <div class="product-price">
+                            ${product.price} جنيه
+                            ${product.oldPrice ? `<span class="old-price">${product.oldPrice} جنيه</span>` : ''}
+                        </div>
+                        <div class="sizes">
+                            ${product.sizes.map(size => 
+                                `<span class="size-btn" onclick="selectSize('${size}', this)">${size}</span>`
+                            ).join('')}
+                        </div>
+                        <button class="whatsapp-btn" onclick="orderProduct(${index})">
+                            <i class="fab fa-whatsapp"></i> اطلب الآن
+                        </button>
+                    </div>
+                `;
+                grid.appendChild(productCard);
+            });
+        }
+
+        // فتح لوحة الإدارة
+        function toggleAdmin() {
+            const panel = document.getElementById('adminPanel');
+            panel.classList.toggle('active');
+        }
+
+        // إضافة منتج جديد
+        document.getElementById('productForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const newProduct = {
+                name: document.getElementById('productName').value,
+                price: parseInt(document.getElementById('productPrice').value),
+                oldPrice: document.getElementById('oldPrice').value ? parseInt(document.getElementById('oldPrice').value) : null,
+                sizes: document.getElementById('sizes').value.split(',').map(s => s.trim()),
+                image: document.getElementById('productImage').value
+            };
+
+            products.push(newProduct);
+            localStorage.setItem('covaProducts', JSON.stringify(products));
+            renderProducts();
+
+            // إعادة تعيين النموذج
+            this.reset();
+            alert('✅ تم إضافة المنتج بنجاح!');
+        });
+
+        // اختيار مقاس
+        function selectSize(size, button) {
+            document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+            selectedSize = size;
+        }
+
+        // فتح تفاصيل المنتج
+        function openDetail(index) {
+            const product = products[index];
+            document.getElementById('detailImage').src = product.image;
+            document.getElementById('detailTitle').textContent = product.name;
+            document.getElementById('detailPrice').innerHTML = `
+                ${product.price} جنيه
+                ${product.oldPrice ? `<span style="text-decoration: line-through; color: #888; font-size: 1.5rem; margin-right: 10px;">${product.oldPrice} جنيه</span>` : ''}
+            `;
+            
+            const sizesContainer = document.getElementById('detailSizes');
+            sizesContainer.innerHTML = product.sizes.map(size => 
+                `<span class="size-btn" style="margin: 5px; padding: 12px 20px; font-size: 1.1rem;" 
+                   onclick="selectDetailSize('${size}', this)">${size}</span>`
+            ).join('');
+            
+            selectedSize = '';
+            document.getElementById('productDetail').classList.add('active');
+        }
+
+        // اختيار مقاس في صفحة التفاصيل
+        function selectDetailSize(size, button) {
+            document.querySelectorAll('#detailSizes .size-btn').forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+            selectedSize = size;
+        }
+
+        // إغلاق تفاصيل المنتج
+        function closeDetail() {
+            document.getElementById('productDetail').classList.remove('active');
+        }
+
+        // طلب المنتج عبر واتساب
+        function orderProduct(index) {
+            if (!selectedSize) {
+                alert('⚠️ يرجى اختيار المقاس أولاً');
+                return;
+            }
+            
+            const product = products[index];
+            const message = `مرحباً 👋%0A%0Aأريد طلب:%0A${product.name}%0Aالمقاس: ${selectedSize}%0Aالسعر: ${product.price} جنيه%0A%0Aشكراً COVA ✨`;
+            
+            const whatsappUrl = `https://wa.me/201096694034?text=${message}`;
+            window.open(whatsappUrl, '_blank');
+        }
+
+        // تحميل المنتجات عند بدء الصفحة
+        renderProducts();
+
+        // إغلاق التفاصيل عند الضغط خارجها
+        document.getElementById('productDetail').addEventListener('click', function(e) {
+            if (e.target === this) closeDetail();
+        });
+    </script>
+</body>
+</html>
