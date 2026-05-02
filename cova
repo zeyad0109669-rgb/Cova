@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COVA - محل الملابس الأنيقة</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 3em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.2);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+        }
+
+        .product-info {
+            padding: 25px;
+        }
+
+        .product-name {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .product-price {
+            font-size: 1.8em;
+            color: #e74c3c;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .sizes-available {
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        .product-details {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 1000;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .details-content {
+            max-width: 500px;
+            margin: 50px auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            position: relative;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            font-size: 2em;
+            cursor: pointer;
+            color: #999;
+        }
+
+        .close-btn:hover {
+            color: #333;
+        }
+
+        .details-image {
+            width: 100%;
+            height: 350px;
+            object-fit: cover;
+            border-radius: 15px;
+            margin-bottom: 25px;
+        }
+
+        .details-name {
+            font-size: 2em;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .details-price {
+            font-size: 2.2em;
+            color: #e74c3c;
+            font-weight: bold;
+            margin-bottom: 25px;
+        }
+
+        .size-selector {
+            margin-bottom: 30px;
+        }
+
+        .size-selector label {
+            display: block;
+            font-size: 1.2em;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .size-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .size-btn {
+            padding: 12px 20px;
+            border: 2px solid #ddd;
+            background: white;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        .size-btn:hover,
+        .size-btn.selected {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .order-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(45deg, #e74c3c, #c0392b);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-size: 1.3em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .order-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(231, 76, 60, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2.2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🛍️ COVA</h1>
+        <p>أفضل الملابس الأنيقة بأسعار مميزة</p>
+    </div>
+
+    <div class="products-grid" id="productsGrid">
+        <!-- المنتجات هتتضاف هنا بالـ JavaScript -->
+    </div>
+
+    <!-- صفحة تفاصيل المنتج -->
+    <div class="product-details" id="productDetails">
+        <div class="details-content">
+            <span class="close-btn" id="closeDetails">&times;</span>
+            <img class="details-image" id="detailsImage" src="" alt="">
+            <h2 class="details-name" id="detailsName"></h2>
+            <div class="details-price" id="detailsPrice"></div>
+            
+            <div class="size-selector">
+                <label>اختر المقاس:</label>
+                <div class="size-buttons" id="sizeButtons"></div>
+            </div>
+            
+            <button class="order-btn" id="orderBtn" onclick="makeOrder()">
+                اطلب الآن 📱
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // بيانات المنتجات
+        const products = [
+            {
+                id: 1,
+                name: "قميص كاجوال أسود",
+                price: "250 جنيه",
+                image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=300&fit=crop",
+                sizes: ["S", "M", "L", "XL"]
+            },
+            {
+                id: 2,
+                name: "جينز أزرق كلاسيك",
+                price: "380 جنيه",
+                image: "https://images.unsplash.com/photo-1542272604-787c3835535d?w=400&h=300&fit=crop",
+                sizes: ["28", "30", "32", "34"]
+            },
+            {
+                id: 3,
+                name: "تيشرت رياضي أبيض",
+                price: "180 جنيه",
+                image: "https://images.unsplash.com/photo-1520988811722-f0dfea8f8e9e?w=400&h=300&fit=crop",
+                sizes: ["S", "M", "L", "XL", "XXL"]
+            },
+            {
+                id: 4,
+                name: "جاكيت شتاء رمادي",
+                price: "650 جنيه",
+                image: "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=400&h=300&fit=crop",
+                sizes: ["M", "L", "XL"]
+            },
+            {
+                id: 5,
+                name: "بنطلون كاجوال بيج",
+                price: "320 جنيه",
+                image: "https://images.unsplash.com/photo-1543396535-4f43f4b1bf14?w=400&h=300&fit=crop",
+                sizes: ["28", "30", "32"]
+            },
+            {
+                id: 6,
+                name: "هودي أسود كبير",
+                price: "420 جنيه",
+                image: "https://images.unsplash.com/photo-1549298916-b41d501d3772?w=400&h=300&fit=crop",
+                sizes: ["M", "L", "XL", "XXL"]
+            }
+        ];
+
+        let currentProduct = null;
+        let selectedSize = "";
+
+        // إنشاء المنتجات في الصفحة الرئيسية
+        function createProducts() {
+            const grid = document.getElementById('productsGrid');
+            products.forEach(product => {
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                card.onclick = () => openProductDetails(product);
+                
+                card.innerHTML = `
+                    <img class="product-image" src="${product.image}" alt="${product.name}">
+                    <div class="product-info">
+                        <div class="product-name">${product.name}</div>
+                        <div class="product-price">${product.price}</div>
+                        <div class="sizes-available">الأحجام المتاحة: ${product.sizes.join(', ')}</div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // فتح تفاصيل المنتج
+        function openProductDetails(product) {
+            currentProduct = product;
+            selectedSize = "";
+            
+            document.getElementById('detailsImage').src = product.image;
+            document.getElementById('detailsName').textContent = product.name;
+            document.getElementById('detailsPrice').textContent = product.price;
+            
+            const sizeButtons = document.getElementById('sizeButtons');
+            sizeButtons.innerHTML = '';
+            
+            product.sizes.forEach(size => {
+                const btn = document.createElement('button');
+                btn.className = 'size-btn';
+                btn.textContent = size;
+                btn.onclick = () => selectSize(size);
+                sizeButtons.appendChild(btn);
+            });
+            
+            document.getElementById('productDetails').style.display = 'block';
+        }
+
+        // اختيار المقاس
+        function selectSize(size) {
+            selectedSize = size;
+            document.querySelectorAll('.size-btn').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            event.target.classList.add('selected');
+        }
+
+        // إغلاق تفاصيل المنتج
+        document.getElementById('closeDetails').onclick = () => {
+            document.getElementById('productDetails').style.display = 'none';
+        };
+
+        // إنشاء الطلب وإرساله للواتس
+        function makeOrder() {
+            if (!selectedSize) {
+                alert('يرجى اختيار المقاس أولاً!');
+                return;
+            }
+            
+            const productName = currentProduct.name;
+            const price = currentProduct.price;
+            const message = `مرحبا! أريد طلب:\n${productName}\nالمقاس: ${selectedSize}\nالسعر: ${price}\n\nشكراً!`;
+            
+            const whatsappUrl = `https://wa.me/201096694034?text=${encodeURIComponent(message)}`;
+            window.open(whatsappUrl, '_blank');
+            
+            document.getElementById('productDetails').style.display = 'none';
+        }
+
+        // إغلاق عند الضغط خارج النافذة
+        window.onclick = (event) => {
+            const details = document.getElementById('productDetails');
+            if (event.target === details) {
+                details.style.display = 'none';
+            }
+        }
+
+        // تشغيل الموقع
+        createProducts();
+    </script>
+</body>
+</html>
