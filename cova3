@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cova - محل الملابس الأنيقة</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 3em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.2);
+        }
+
+        .product-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #ff6b6b, #4ecdc4);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 250px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4em;
+            color: #ddd;
+        }
+
+        .product-title {
+            font-size: 1.5em;
+            color: #333;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .price {
+            font-size: 1.8em;
+            color: #e74c3c;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .sizes {
+            text-align: center;
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        .order-page {
+            display: none;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            max-width: 600px;
+            margin: 0 auto;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .order-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .order-header h2 {
+            color: #333;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .order-price {
+            font-size: 2em;
+            color: #e74c3c;
+            font-weight: bold;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e1e8ed;
+            border-radius: 10px;
+            font-size: 1.1em;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #4ecdc4;
+        }
+
+        .whatsapp-btn {
+            width: 100%;
+            padding: 20px;
+            background: #25D366;
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-size: 1.4em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .whatsapp-btn:hover {
+            background: #128C7E;
+            transform: scale(1.05);
+        }
+
+        .back-btn {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.1em;
+            margin-bottom: 20px;
+        }
+
+        .back-btn:hover {
+            background: #5a6268;
+        }
+
+        @media (max-width: 768px) {
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2.2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- الصفحة الرئيسية -->
+        <div id="homePage">
+            <div class="header">
+                <h1>👗 Cova 👠</h1>
+                <p>أفضل الملابس الأنيقة بأسعار مميزة</p>
+            </div>
+
+            <div class="products-grid" id="productsGrid">
+                <!-- المنتجات ستُضاف هنا بواسطة JavaScript -->
+            </div>
+        </div>
+
+        <!-- صفحة الطلب -->
+        <div id="orderPage" class="order-page">
+            <button class="back-btn" onclick="showHome()">← العودة للمنتجات</button>
+            
+            <div class="order-header">
+                <h2 id="orderTitle"></h2>
+                <div class="order-price" id="orderPrice"></div>
+            </div>
+
+            <form id="orderForm">
+                <div class="form-group">
+                    <label>اسمك الكامل:</label>
+                    <input type="text" id="customerName" required>
+                </div>
+
+                <div class="form-group">
+                    <label>رقم الهاتف:</label>
+                    <input type="tel" id="customerPhone" required>
+                </div>
+
+                <div class="form-group">
+                    <label>المقاس المطلوب:</label>
+                    <select id="selectedSize" required>
+                        <option value="">اختر المقاس</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>ملاحظات إضافية:</label>
+                    <input type="text" id="notes" placeholder="مثال: اللون المفضل، العنوان...">
+                </div>
+
+                <a href="#" class="whatsapp-btn" id="whatsappLink">
+                    📱 اطلب الآن عبر واتساب
+                </a>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // بيانات المنتجات
+        const products = [
+            {
+                id: 1,
+                title: "فستان سهرة أنيق",
+                price: "450 جنيه",
+                sizes: ["S", "M", "L", "XL"],
+                image: "👗"
+            },
+            {
+                id: 2,
+                title: "بلوزر قطني عصري",
+                price: "250 جنيه",
+                sizes: ["S", "M", "L", "XL", "XXL"],
+                image: "👚"
+            },
+            {
+                id: 3,
+                title: "جينز كلاسيك",
+                price: "350 جنيه",
+                sizes: ["28", "30", "32", "34", "36"],
+                image: "👖"
+            },
+            {
+                id: 4,
+                title: "تيشيرت رياضي",
+                price: "180 جنيه",
+                sizes: ["S", "M", "L", "XL"],
+                image: "👕"
+            },
+            {
+                id: 5,
+                title: "جاكيت شتاء",
+                price: "650 جنيه",
+                sizes: ["M", "L", "XL", "XXL"],
+                image: "🧥"
+            },
+            {
+                id: 6,
+                title: "شورت صيفي",
+                price: "220 جنيه",
+                sizes: ["S", "M", "L", "XL"],
+                image: "🩳"
+            }
+        ];
+
+        let currentProduct = null;
+
+        // عرض المنتجات
+        function displayProducts() {
+            const grid = document.getElementById('productsGrid');
+            grid.innerHTML = '';
+
+            products.forEach(product => {
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                card.onclick = () => showOrderPage(product);
+                
+                card.innerHTML = `
+                    <div class="product-image">${product.image}</div>
+                    <div class="product-title">${product.title}</div>
+                    <div class="price">${product.price}</div>
+                    <div class="sizes">المقاسات المتوفرة: ${product.sizes.join(', ')}</div>
+                `;
+                
+                grid.appendChild(card);
+            });
+        }
+
+        // عرض صفحة الطلب
+        function showOrderPage(product) {
+            currentProduct = product;
+            
+            document.getElementById('homePage').style.display = 'none';
+            document.getElementById('orderPage').style.display = 'block';
+            
+            document.getElementById('orderTitle').textContent = product.title;
+            document.getElementById('orderPrice').textContent = product.price;
+            
+            const sizeSelect = document.getElementById('selectedSize');
+            sizeSelect.innerHTML = '<option value="">اختر المقاس</option>';
+            
+            product.sizes.forEach(size => {
+                const option = document.createElement('option');
+                option.value = size;
+                option.textContent = size;
+                sizeSelect.appendChild(option);
+            });
+        }
+
+        // العودة للصفحة الرئيسية
+        function showHome() {
+            document.getElementById('homePage').style.display = 'block';
+            document.getElementById('orderPage').style.display = 'none';
+        }
+
+        // إرسال الطلب للواتساب
+        document.getElementById('orderForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            if (!currentProduct) return;
+            
+            const name = document.getElementById('customerName').value;
+            const phone = document.getElementById('customerPhone').value;
+            const size = document.getElementById('selectedSize').value;
+            const notes = document.getElementById('notes').value;
+            
+            const message = `مرحباً 👋%0A%0Aأريد طلب:%0A${currentProduct.title}%0Aالسعر: ${currentProduct.price}%0Aالمقاس: ${size}%0A%0Aاسمي: ${name}%0Aرقمي: ${phone}%0A${notes ? 'ملاحظات: ' + notes : ''}%0A%0Aشكراً! 🙏`;
+            
+            const whatsappUrl = `https://wa.me/201096694034?text=${message}`;
+            window.open(whatsappUrl, '_blank');
+        });
+
+        // تحميل المنتجات عند بدء الصفحة
+        displayProducts();
+    </script>
+</body>
+</html>
